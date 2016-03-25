@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Juzawo</string>
+    <string name="action_settings">Settings</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="password">password</string>
+    <string name="user_name">user name</string>
+    <string name="logo">Jjuzzawo logo</string>
+    <string name="update_prices">Update Prices</string>
+    <string name="register_fuel_station">Register</string>
+    <string name="forgot_password">\? forgot your password</string>
+    <string name="register_here">Not yet a member</string>
+    <string name="validationerrormessage">error</string>
+    <string name="firstnameerror">firstname</string>
+    <string name="submit">Submit</string>
+    <string name="phone_number">phone number</string>
+    <string name="email_address">email address</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+</resources>
