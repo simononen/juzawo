@@ -1,4 +1,4 @@
-package com.example.simo.juzawo;
+package com.example.simo.juzawo.gps;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -92,7 +92,7 @@ public class GPSTracker extends Service implements LocationListener {
                     // here to request the missing permissions, and then overriding
                     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                     //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
+                    // to handle the case where the com.example.simo.juzawo.user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
 
                 }
@@ -125,7 +125,7 @@ public class GPSTracker extends Service implements LocationListener {
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                 //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
+                // to handle the case where the com.example.simo.juzawo.user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
