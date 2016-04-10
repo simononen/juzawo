@@ -1,5 +1,6 @@
 package com.example.simo.juzawo.stations;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class StationsAdapter extends ArrayAdapter<Station> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
@@ -33,9 +35,10 @@ public class StationsAdapter extends ArrayAdapter<Station> {
         ImageView imImage = (ImageView) convertView.findViewById(R.id.image);
 
         // Populate the data into the template view using the data object
-        tvLocation.setText(station.getLocation());
+        String base = "http://192.168.43.218:8000";
+        imImage.setImageURI(Uri.withAppendedPath(Uri.parse(base), "/logos/shell.png"));
         tvbranchName.setText(station.getBranchName());
-        imImage.setImageResource(R.drawable.marker);
+        tvLocation.setText(station.getLocation());
 
         // Return the completed view to render on screen
         return convertView;

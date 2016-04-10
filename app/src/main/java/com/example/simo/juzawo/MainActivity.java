@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       // setSupportActionBar(toolbar);
 
         //listView = (ListView) findViewById(R.id.list);
 
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         Retrofit retrofit = new Retrofit
                 .Builder()//http://192.168.43.218:8080
-                .baseUrl("http://192.168.43.218:8080")
+                .baseUrl("http://192.168.43.218:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -78,6 +80,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
         //}
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(searchIntent);
+            }
+        });
+
     }
 
     @Override
@@ -111,6 +123,40 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         //listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stations));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_map) {
+            Intent mapActivityIntent = new Intent(MainActivity.this, MapActivity.class);
+            /*StationDetails a = new StationDetails();
+            double location_lat = Double.parseDouble(String.valueOf(a.getLat()));
+            double location_lng = Double.parseDouble(String.valueOf(a.getLng()));
+
+            Bundle bundle = new Bundle();
+            bundle.putDouble("lat", location_lat);
+            bundle.putDouble("lng", location_lng);
+            mapActivityIntent.putExtras(bundle);*/
+            startActivity(mapActivityIntent);
+        }
+        else if(id == R.id.action_settings) {
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onFailure(Throwable t) {
@@ -140,5 +186,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public void onProviderDisabled(String provider) {
 
     }
+
+
 
 }

@@ -45,7 +45,7 @@ public class DetailsActivity extends AppCompatActivity implements Callback<Stati
 
         Retrofit retrofit = new Retrofit
                 .Builder()//http://192.168.43.218:8080
-                .baseUrl("http://192.168.43.218:8080")
+                .baseUrl("http://192.168.43.218:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

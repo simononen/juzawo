@@ -1,16 +1,20 @@
 package com.example.simo.juzawo.stations;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Station {
 
 
-    @SerializedName("id")
-    @Expose
     private Integer id;
     private String location;
     private String brand_name;
+    private String logo;
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
     public Integer getId() {
         return id;

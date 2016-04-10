@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:orientation="horizontal">
 
@@ -24,6 +25,7 @@
             android:id="@+id/branch_name"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
+            android:textColor="@color/primaryDark"
             android:padding="2dp"/>
 
         <TextView
@@ -32,6 +34,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="location"
             android:id="@+id/location"
+            android:padding="2dp"
             android:layout_marginLeft="10dp"/>
 
 

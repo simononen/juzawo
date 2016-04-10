@@ -17,4 +17,8 @@
     <string name="email_address">email address</string>
     <string name="last_name">Last name</string>
     <string name="first_name">First name</string>
+    <string name="map">map</string>
+    <string name="action_search">search</string>
+    <string name="map_tittle">Map mode</string>
+    <string name="search">Search</string>
 </resources>
