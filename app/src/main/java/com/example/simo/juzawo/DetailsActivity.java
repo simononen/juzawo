@@ -1,27 +1,28 @@
 package com.example.simo.juzawo;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.simo.juzawo.prices.Prices;
-import com.example.simo.juzawo.stationdetails.StationDetails;
+import com.example.simo.juzawo.http.RetrofitBuilder;
+import com.example.simo.juzawo.prices.PriceAdapter;
+import com.example.simo.juzawo.stations.Station;
 import com.example.simo.juzawo.stations.StationsEndpoint;
 
-import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+//import retrofit2.GsonConverterFactory;
 
-public class DetailsActivity extends AppCompatActivity implements Callback<StationDetails> {
+public class DetailsActivity extends AppCompatActivity implements Callback<Station> {
 
     private long at;
+    private String stringword;
     private TextView txtPetrol;
     private TextView txtDiesel;
     private TextView txtKerosene;
@@ -40,18 +41,14 @@ public class DetailsActivity extends AppCompatActivity implements Callback<Stati
 
         Bundle b = this.getIntent().getExtras();
         at = b.getLong("TEXT");
+        stringword = b.getString("name");
 
 
 
-        Retrofit retrofit = new Retrofit
-                .Builder()//http://192.168.43.218:8080
-                .baseUrl("http://192.168.43.218:8000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = RetrofitBuilder.build();
 
-        StationsEndpoint stationsEndpoint = retrofit.create(StationsEndpoint.class);
-
-        Call<StationDetails> call = stationsEndpoint.findStation(at);
+        StationsEndpoint stationsEndpoint =  retrofit.create(StationsEndpoint.class);
+        Call<Station> call = stationsEndpoint.findStation(at);
 
         call.enqueue(this);
 
@@ -59,31 +56,26 @@ public class DetailsActivity extends AppCompatActivity implements Callback<Stati
 
 
     @Override
-    public void onResponse(Response<StationDetails> response, Retrofit retrofit) {
-        Toast.makeText(getApplicationContext(), "working", Toast.LENGTH_SHORT).show();
-        ListView list;
-        //list = (ListView) findViewById(R.id.list1);
+    public void onResponse(Call<Station> call, Response<Station> response) {
+        Station stat = response.body();
 
-        StationDetails station = response.body();
-        List<Prices> s = station.getPrices();
-        for(int i = 1; i < s.size(); i++) {
-            txtPetrol.setText("" + s.get(i).getPrice());
+        ActionBar actionBar = getSupportActionBar();
 
+        if (actionBar != null) {
+            actionBar.setTitle(stat.getBrand_name());
+            actionBar.setSubtitle(stat.getLocation());
         }
 
-        String[] myStringArray={"A","B","C"};
-        ArrayAdapter<String> myAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                myStringArray);
-        ListView myList=
-                (ListView) findViewById(R.id.list1);
-        myList.setAdapter(myAdapter);
+        ListView myList= (ListView) findViewById(R.id.list1);
 
+        PriceAdapter adapter = new PriceAdapter(this, R.layout.details_items, stat.getPrice());
+
+        myList.setAdapter(adapter);
     }
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onFailure(Call<Station> call, Throwable t) {
         Toast.makeText(this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
 
     }
 }

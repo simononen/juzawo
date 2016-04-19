@@ -5,14 +5,15 @@
 
     <item
         android:id="@+id/action_map"
+        android:icon="@drawable/ic_action_map"
         android:orderInCategory="0"
         android:title="@string/map"
-        android:icon="@drawable/ic_action_map"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
+        android:textColor="#000"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 

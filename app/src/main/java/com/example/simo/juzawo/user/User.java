@@ -1,33 +1,23 @@
 package com.example.simo.juzawo.user;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class User {
 
-    @SerializedName("id")
-    @Expose
+
     private Integer id;
-    @SerializedName("firstname")
-    @Expose
+
     private String firstname;
-    @SerializedName("lastname")
-    @Expose
+
     private String lastname;
-    @SerializedName("phone")
-    @Expose
+
     private String phone;
-    @SerializedName("username")
-    @Expose
+
     private String username;
-    @SerializedName("email")
-    @Expose
+
     private String email;
-    @SerializedName("created_at")
-    @Expose
+
     private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
+
     private String updatedAt;
 
     /**

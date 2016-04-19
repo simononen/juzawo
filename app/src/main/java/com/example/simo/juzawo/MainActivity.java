@@ -1,13 +1,17 @@
 package com.example.simo.juzawo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simo.juzawo.gps.GPSTracker;
+import com.example.simo.juzawo.http.RetrofitBuilder;
+import com.example.simo.juzawo.stationdetails.StationDetails;
 import com.example.simo.juzawo.stations.Station;
 import com.example.simo.juzawo.stations.StationsAdapter;
 import com.example.simo.juzawo.stations.StationsEndpoint;
@@ -26,11 +32,14 @@ import com.google.android.gms.location.LocationRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+//import retrofit2.GsonConverterFactory;
+
+//import com.example.simo.juzawo.stations.Station;
 
 public class MainActivity extends AppCompatActivity implements LocationListener, Callback<List<Station>> {
 
@@ -38,14 +47,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     GPSTracker gps;
     private TextView mResult;
     private ProgressDialog mProgress;
-    private ListView listView;
-    private List<Station> stations;
+    private List<StationDetails> stations;
 
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
     protected TextView mLatitude;
     protected TextView mLongitude;
     protected LocationRequest mLocationRequest;
+    private double l;
+    private double lg;
+
+    private static Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +78,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         double longitude = gps.getLongitude();
         //192.168.43.218:8080
 
-        Retrofit retrofit = new Retrofit
-                .Builder()//http://192.168.43.218:8080
-                .baseUrl("http://192.168.43.218:8000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = RetrofitBuilder.build();
 
         StationsEndpoint stationsEndpoint = retrofit.create(StationsEndpoint.class);
 
-        Call<List<Station>> call = stationsEndpoint.findNearestStations(3.3039399, 32.3130871, 10);
+        Call<List<Station>> call = stationsEndpoint.findNearestStations(3.3039399, 32.3130871, 40);
 
         call.enqueue(this);
 
@@ -92,42 +100,37 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     }
 
-    @Override
-    public void onResponse(Response<List<Station>> response, Retrofit retrofit) {
-        //Toast.makeText(this, "Stations: " + response.body().size(), Toast.LENGTH_LONG).show();
-
-        final ArrayList<Station> stations = (ArrayList<Station>) response.body();
-
-        listView = (ListView) findViewById(R.id.list);
-        //listView.setAdapter(custom);
-        final StationsAdapter custom = new StationsAdapter(this, R.layout.list_item, stations);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                Station item = custom.getItem(position);
-                long result = (id +1);
-                Intent i = new Intent(MainActivity.this, DetailsActivity.class);
-                Bundle b = new Bundle();
-                b.putLong("TEXT", result);
-                i.putExtras(b);
-                i.putExtra("name", result);
-                startActivity(i);
-                //Toast.makeText(getApplicationContext(), "Id: " + (id+1) , Toast.LENGTH_LONG).show();
-            }
-        });
-
-        listView.setAdapter(custom);
-
-        //Toast.makeText(getApplicationContext(), "Response", Toast.LENGTH_LONG).show();
-        //listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stations));
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        //setMenuBackground();
         return true;
+    }
+
+    private void setMenuBackground() {
+        getLayoutInflater().setFactory(new LayoutInflater.Factory() {
+            @Override
+            public View onCreateView(String name, Context context, AttributeSet attrs) {
+                if (name.equalsIgnoreCase("com.android.internal.view")) {
+                    try {
+                        LayoutInflater f = getLayoutInflater();
+                        final View view = f.createView(name, null, attrs);
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                view.setBackgroundResource(R.color.colorHighlight);
+                            }
+                        });
+                        return view;
+                    } catch (ClassNotFoundException e) {
+                        System.out.println(e);
+                    }
+                }
+                return null;
+            }
+        });
     }
 
     @Override
@@ -140,14 +143,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_map) {
             Intent mapActivityIntent = new Intent(MainActivity.this, MapActivity.class);
-            /*StationDetails a = new StationDetails();
-            double location_lat = Double.parseDouble(String.valueOf(a.getLat()));
-            double location_lng = Double.parseDouble(String.valueOf(a.getLng()));
+            /*Station a = new Station();
+            double b = a.setLat(2.234567);
+            double c = a.setLng(32.234567);
+            double location_lat = a.getLat();
+            double location_lng = a.getLng();*/
 
-            Bundle bundle = new Bundle();
-            bundle.putDouble("lat", location_lat);
-            bundle.putDouble("lng", location_lng);
-            mapActivityIntent.putExtras(bundle);*/
+            mapActivityIntent.putExtras(bundle);
             startActivity(mapActivityIntent);
         }
         else if(id == R.id.action_settings) {
@@ -155,13 +157,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void onFailure(Throwable t) {
-        Log.e("http", "", t);
-        Toast.makeText(this, "Stations: ERROR ", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -188,5 +183,47 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     }
 
 
+    @Override
+    public void onResponse(Call<List<Station>> call, Response<List<Station>> response) {
 
+        final ArrayList<Station> stations = (ArrayList<Station>) response.body();
+        ListView listView = (ListView) findViewById(R.id.list);
+        final StationsAdapter custom = new StationsAdapter(this, R.layout.list_item, stations);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                Station item = custom.getItem(position);
+                Long result = item.getId();
+                Intent i = new Intent(MainActivity.this, DetailsActivity.class);
+                Bundle b = new Bundle();
+                b.putLong("TEXT", result);
+                i.putExtras(b);
+                i.putExtra("name", result);
+                startActivity(i);
+                //Toast.makeText(getApplicationContext(), "Id: " + (id+1) , Toast.LENGTH_LONG).show();
+            }
+        });
+        listView.setAdapter(custom);
+
+        List<Station> stns = response.body();
+/*        for (int i = 0; i < stns.size(); i++){
+            l = stns.get(i).getLat();
+            lg = stns.get(i).getLng();
+            Toast.makeText(getApplicationContext(), "latitude "+stns.get(i).getLat()+" longitude "+stns.get(i).getLng(), Toast.LENGTH_SHORT).show();
+            bundle.putDouble("lat", l);
+            bundle.putDouble("lng", lg);
+        }*/
+
+        //Toast.makeText(getApplicationContext(), "Response", Toast.LENGTH_LONG).show();
+        //listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stations));
+
+    }
+
+    @Override
+    public void onFailure(Call<List<Station>> call, Throwable t) {
+        Log.e("http", "", t);
+        Toast.makeText(this, "Stations: ERROR ", Toast.LENGTH_LONG).show();
+
+    }
 }

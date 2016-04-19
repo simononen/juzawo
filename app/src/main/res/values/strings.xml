@@ -21,4 +21,7 @@
     <string name="action_search">search</string>
     <string name="map_tittle">Map mode</string>
     <string name="search">Search</string>
+    <string name="fuel_type">Fuel Type</string>
+    <string name="fuel_priceb">Fuel price</string>
+    <string name="fuel_price">fuelPrice</string>
 </resources>

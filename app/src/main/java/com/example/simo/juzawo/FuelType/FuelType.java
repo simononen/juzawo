@@ -1,10 +1,13 @@
-package com.example.simo.juzawo.fueltypes;
+package com.example.simo.juzawo.FuelType;
 
 
-public class FuelTypes {
+public class FuelType {
+
 
     private Integer id;
+
     private String name;
+
     private String description;
 
     public Integer getId() {

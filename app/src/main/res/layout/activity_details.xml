@@ -16,9 +16,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/petrol"
+        android:id="@+id/txt1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
 <!--
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +27,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/diesel"
-        android:layout_below="@+id/petrol"
+        android:layout_below="@+id/txt1"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -48,11 +49,12 @@
         android:layout_below="@+id/keroscene"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp" />
+-->
 
-    -->
 
-    <ListView
-        android:layout_width="wrap_content"
+
+       <ListView
+        android:layout_width="match_parent"
         android:layout_height="400dp"
         android:id="@+id/list1"
         android:layout_alignParentBottom="true"

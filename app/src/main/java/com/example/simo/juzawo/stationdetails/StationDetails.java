@@ -1,15 +1,14 @@
 package com.example.simo.juzawo.stationdetails;
 
-import com.example.simo.juzawo.prices.Prices;
+import com.example.simo.juzawo.prices.Price;
 import com.example.simo.juzawo.user.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StationDetails {
 
 
-    private Integer id;
+    private int id;
 
     private String brand_name;
 
@@ -35,11 +34,11 @@ public class StationDetails {
 
     private String logo;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -67,16 +66,16 @@ public class StationDetails {
         this.tags = tags;
     }
 
-    public String getLat() {
-        return lat;
+    public double getLat() {
+        return Double.parseDouble(lat);
     }
 
     public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
-        return lng;
+    public double getLng() {
+        return Double.parseDouble(lng);
     }
 
     public void setLng(String lng) {
@@ -99,14 +98,14 @@ public class StationDetails {
         this.user = user;
     }
 
-    public List<Prices> getPrices() {
+    public List<Price> getPrices() {
         return prices;
     }
 
-    public void setPrices(List<Prices> prices) {
+    public void setPrices(List<Price> prices) {
         this.prices = prices;
     }
 
-    private List<Prices> prices = new ArrayList<Prices>();
+    private List<Price> prices;
 
 }
