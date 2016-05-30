@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Juzawo</string>
+    <string name="app_name">Jjuzzawo</string>
     <string name="action_settings">Settings</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
@@ -24,4 +24,15 @@
     <string name="fuel_type">Fuel Type</string>
     <string name="fuel_priceb">Fuel price</string>
     <string name="fuel_price">fuelPrice</string>
+    <string name="map_terrain">Terrain</string>
+    <string name="map_satelite">Satellite</string>
+    <string name="map_hybrid">Hybrid</string>
+    <string name="map_normal">Normal</string>
+    <string name="map_none">None</string>
+    <string name="error_server">Sorry Error Connecting to Server</string>
+    <string name="Prices">Prices</string>
+    <string name="services">Services</string>
+    <string name="service_name">Service name</string>
+    <string name="image_icon">image</string>
+    <string name="branchName">Brach Name</string>
 </resources>

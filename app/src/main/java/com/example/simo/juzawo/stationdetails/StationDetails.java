@@ -24,6 +24,8 @@ public class StationDetails {
 
     private User user;
 
+    private List<Price> prices;
+
     public String getLogo() {
         return logo;
     }
@@ -106,6 +108,6 @@ public class StationDetails {
         this.prices = prices;
     }
 
-    private List<Price> prices;
+
 
 }

@@ -29,9 +29,10 @@ public class PriceAdapter extends ArrayAdapter<Price> {
         // Lookup view for data population
         TextView fuelType = (TextView) convertView.findViewById(R.id.fuel_type);
         TextView fuelPrice = (TextView) convertView.findViewById(R.id.fuel_price);
+
         // Populate the data into the template view using the data object
-        fuelType.setText(a.getPrice());
-        fuelPrice.setText(a.getFuel_type().getName());
+        fuelType.setText(a.getFuelType().getName());
+        fuelPrice.setText(a.getPrice());
 
         // Return the completed view to render on screen
         return convertView;

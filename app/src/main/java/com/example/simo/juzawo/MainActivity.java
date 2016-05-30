@@ -1,22 +1,19 @@
 package com.example.simo.juzawo;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     GPSTracker gps;
     private TextView mResult;
     private ProgressDialog mProgress;
+    private ProgressBar progressBar;
     private List<StationDetails> stations;
 
     protected GoogleApiClient mGoogleApiClient;
@@ -62,7 +60,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
         setContentView(R.layout.activity_main);
+        //progressBar.setVisibility(View.VISIBLE);
+
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        // setSupportActionBar(toolbar);
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         gps = new GPSTracker(MainActivity.this);
 
          //check if GPS enabled
-        //if (gps.canGetLocation()) {
+        if (gps.canGetLocation()) {
 
         double latitude = gps.getLatitude();
         double longitude = gps.getLongitude();
@@ -82,12 +83,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         StationsEndpoint stationsEndpoint = retrofit.create(StationsEndpoint.class);
 
-        Call<List<Station>> call = stationsEndpoint.findNearestStations(3.3039399, 32.3130871, 40);
+        Call<List<Station>> call = stationsEndpoint.findNearestStations(latitude, longitude, 44);
 
         call.enqueue(this);
 
         Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-        //}
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -109,30 +110,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         return true;
     }
 
-    private void setMenuBackground() {
-        getLayoutInflater().setFactory(new LayoutInflater.Factory() {
-            @Override
-            public View onCreateView(String name, Context context, AttributeSet attrs) {
-                if (name.equalsIgnoreCase("com.android.internal.view")) {
-                    try {
-                        LayoutInflater f = getLayoutInflater();
-                        final View view = f.createView(name, null, attrs);
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.setBackgroundResource(R.color.colorHighlight);
-                            }
-                        });
-                        return view;
-                    } catch (ClassNotFoundException e) {
-                        System.out.println(e);
-                    }
-                }
-                return null;
-            }
-        });
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -143,12 +120,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_map) {
             Intent mapActivityIntent = new Intent(MainActivity.this, MapActivity.class);
-            /*Station a = new Station();
-            double b = a.setLat(2.234567);
-            double c = a.setLng(32.234567);
-            double location_lat = a.getLat();
-            double location_lng = a.getLng();*/
-
             mapActivityIntent.putExtras(bundle);
             startActivity(mapActivityIntent);
         }
@@ -185,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onResponse(Call<List<Station>> call, Response<List<Station>> response) {
-
         final ArrayList<Station> stations = (ArrayList<Station>) response.body();
         ListView listView = (ListView) findViewById(R.id.list);
         final StationsAdapter custom = new StationsAdapter(this, R.layout.list_item, stations);
@@ -201,22 +171,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 i.putExtras(b);
                 i.putExtra("name", result);
                 startActivity(i);
-                //Toast.makeText(getApplicationContext(), "Id: " + (id+1) , Toast.LENGTH_LONG).show();
             }
         });
         listView.setAdapter(custom);
-
-        List<Station> stns = response.body();
-/*        for (int i = 0; i < stns.size(); i++){
-            l = stns.get(i).getLat();
-            lg = stns.get(i).getLng();
-            Toast.makeText(getApplicationContext(), "latitude "+stns.get(i).getLat()+" longitude "+stns.get(i).getLng(), Toast.LENGTH_SHORT).show();
-            bundle.putDouble("lat", l);
-            bundle.putDouble("lng", lg);
-        }*/
-
-        //Toast.makeText(getApplicationContext(), "Response", Toast.LENGTH_LONG).show();
-        //listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stations));
 
     }
 

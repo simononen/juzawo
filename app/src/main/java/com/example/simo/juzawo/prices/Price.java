@@ -5,20 +5,15 @@ import com.example.simo.juzawo.FuelType.FuelType;
 
 public class Price {
 
-
-
     private Integer id;
-
-
-    private String fuel_id;
-
-    private String station_id;
-
+    private String fuelId;
+    private String stationId;
     private String price;
+    private String createdAt;
+    private String updatedAt;
+    private FuelType fuelType;
 
-    private FuelType fuel_type;
-
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
@@ -26,20 +21,20 @@ public class Price {
         this.id = id;
     }
 
-    public String getFuel_id() {
-        return fuel_id;
+    public String getFuelId() {
+        return fuelId;
     }
 
-    public void setFuel_id(String fuel_id) {
-        this.fuel_id = fuel_id;
+    public void setFuelId(String fuelId) {
+        this.fuelId = fuelId;
     }
 
-    public String getStation_id() {
-        return station_id;
+    public String getStationId() {
+        return stationId;
     }
 
-    public void setStation_id(String station_id) {
-        this.station_id = station_id;
+    public void setStationId(String stationId) {
+        this.stationId = stationId;
     }
 
     public String getPrice() {
@@ -50,15 +45,28 @@ public class Price {
         this.price = price;
     }
 
-    public FuelType getFuel_type() {
-        return fuel_type;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setFuel_type(FuelType fuel_type) {
-        this.fuel_type = fuel_type;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
 
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
+    public FuelType getFuelType() {
+        return fuelType;
+    }
 
+    public void setFuelType(FuelType fuelType) {
+        this.fuelType = fuelType;
+    }
 }

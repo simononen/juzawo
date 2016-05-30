@@ -3,12 +3,12 @@ package com.example.simo.juzawo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simo.juzawo.http.RetrofitBuilder;
-import com.example.simo.juzawo.prices.PriceAdapter;
 import com.example.simo.juzawo.stations.Station;
 import com.example.simo.juzawo.stations.StationsEndpoint;
 
@@ -29,7 +29,7 @@ public class DetailsActivity extends AppCompatActivity implements Callback<Stati
     private TextView txtGas;
     private TextView txtDetails;
     private TextView txt1;
-
+    public ImageView iconImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,16 +61,20 @@ public class DetailsActivity extends AppCompatActivity implements Callback<Stati
 
         ActionBar actionBar = getSupportActionBar();
 
+        //String url = "http://192.168.43.70:8080/"+stat.getLogo();
+
         if (actionBar != null) {
             actionBar.setTitle(stat.getBrand_name());
             actionBar.setSubtitle(stat.getLocation());
+            //actionBar.setIcon(Integer.parseInt(url));
+            
         }
 
         ListView myList= (ListView) findViewById(R.id.list1);
 
-        PriceAdapter adapter = new PriceAdapter(this, R.layout.details_items, stat.getPrice());
+        //PriceAdapter adapter = new PriceAdapter(this, R.layout.details_items, stat.getPrice());
 
-        myList.setAdapter(adapter);
+        //myList.setAdapter(adapter);
     }
 
     @Override

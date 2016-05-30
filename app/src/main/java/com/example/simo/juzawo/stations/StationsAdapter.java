@@ -33,14 +33,18 @@ public class StationsAdapter extends ArrayAdapter<Station> {
         TextView tvbranchName = (TextView) convertView.findViewById(R.id.branch_name);
         TextView tvLocation = (TextView) convertView.findViewById(R.id.location);
         ImageView imImage = (ImageView) convertView.findViewById(R.id.image);
+        TextView tvdiesel = (TextView) convertView.findViewById(R.id.diesel_price);
+        TextView tvpetrol = (TextView) convertView.findViewById(R.id.petrol_price);
 
         // Populate the data into the template view using the data object
         //String base = "http://192.168.43.218:8000";
         //imImage.setImageURI(Uri.withAppendedPath(Uri.parse(base), "/logos/shell.png"));
         tvbranchName.setText(station.getBrand_name());
         tvLocation.setText(" " + station.getLocation());
-        String url = "http://192.168.43.70:8080/"+station.getLogo();
+        String url = "http://api.patrickoryono.co/"+station.getLogo();
         Picasso.with(getContext()).load(url).into(imImage);
+        tvdiesel.setText(""+station.getId());
+        tvpetrol.setText(""+station.getId());
 
 
         // Return the completed view to render on screen

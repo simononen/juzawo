@@ -11,7 +11,7 @@ public class RetrofitBuilder {
         if (ourInstance == null) {
             ourInstance = new Retrofit
                     .Builder()//http://192.168.43.218:8080
-                    .baseUrl("http://192.168.43.70:8080")
+                    .baseUrl("http://api.patrickoryono.co")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
