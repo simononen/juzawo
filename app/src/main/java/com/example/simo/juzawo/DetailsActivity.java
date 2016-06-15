@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simo.juzawo.http.RetrofitBuilder;
+import com.example.simo.juzawo.prices.PriceAdapter;
 import com.example.simo.juzawo.stations.Station;
 import com.example.simo.juzawo.stations.StationsEndpoint;
 
@@ -71,10 +72,12 @@ public class DetailsActivity extends AppCompatActivity implements Callback<Stati
         }
 
         ListView myList= (ListView) findViewById(R.id.list1);
+        final PriceAdapter adapter = new PriceAdapter(this, R.layout.details_items, stat.getPrice());
+        myList.setAdapter(adapter);
 
-        //PriceAdapter adapter = new PriceAdapter(this, R.layout.details_items, stat.getPrice());
-
-        //myList.setAdapter(adapter);
+        ListView listServices = (ListView) findViewById(R.id.list_services);
+        //ServiceAdapter serviceAdapter = new ServiceAdapter();
+        //listServices.setAdapter(serviceAdapter);
     }
 
     @Override

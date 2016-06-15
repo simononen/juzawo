@@ -49,21 +49,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".DetailsActivity"
             android:theme="@style/Theme.Appcelerator">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.simo.juzawo.MainActivity" />
-
         </activity>
         <activity
             android:name=".SearchActivity"
-            android:theme="@style/Theme.Appcelerator"
-            android:label="@string/search">
+            android:label="@string/search"
+            android:theme="@style/Theme.Appcelerator">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -72,18 +69,28 @@
                 android:resource="@xml/searchable"/>
             -->
 
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.simo.juzawo.MainActivity" />
-
         </activity>
         <activity
             android:name=".MapActivity"
-            android:theme="@style/Theme.Appcelerator"
             android:label="@string/map_tittle"
-            android:parentActivityName="com.example.simo.juzawo.MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.Appcelerator">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.simo.juzawo.MainActivity" />
+        </activity>
+        <activity
+            android:name=".TabsDetailsActivity"
+            android:label="@string/title_activity_tabs_details"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.simo.juzawo.MainActivity" />

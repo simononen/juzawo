@@ -152,11 +152,11 @@ public class GPSTracker extends Service implements LocationListener {
 
 
     public void showSettingsAlert() {
-        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
-        alertDialog.setTitle("GPS is settings");
+        alertDialog.setTitle("GPS settings");
 
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to the settings menu?");
+        alertDialog.setMessage("GPS is not enabled. Enable from settings menu then refresh");
 
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             @Override
@@ -165,8 +165,6 @@ public class GPSTracker extends Service implements LocationListener {
                 context.startActivity(intent);
             }
         });
-
-
 
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

@@ -1,14 +1,17 @@
 package com.example.simo.juzawo.stationdetails;
 
+import android.app.Service;
+
 import com.example.simo.juzawo.prices.Price;
 import com.example.simo.juzawo.user.User;
+import com.google.android.gms.analytics.ecommerce.Promotion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StationDetails {
 
-
-    private int id;
+    private Integer id;
 
     private String brand_name;
 
@@ -16,31 +19,31 @@ public class StationDetails {
 
     private String tags;
 
+    private String logo;
+
     private String lat;
 
     private String lng;
 
     private String user_id;
 
+    private String created_at;
+
+    private String updated_at;
+
     private User user;
 
-    private List<Price> prices;
+    private List<Price> price = new ArrayList<Price>();
 
-    public String getLogo() {
-        return logo;
-    }
+    private List<Service> services = new ArrayList<Service>();
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
+    private List<Promotion> promotions = new ArrayList<Promotion>();
 
-    private String logo;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -68,16 +71,24 @@ public class StationDetails {
         this.tags = tags;
     }
 
-    public double getLat() {
-        return Double.parseDouble(lat);
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getLat() {
+        return lat;
     }
 
     public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public double getLng() {
-        return Double.parseDouble(lng);
+    public String getLng() {
+        return lng;
     }
 
     public void setLng(String lng) {
@@ -92,6 +103,22 @@ public class StationDetails {
         this.user_id = user_id;
     }
 
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
     public User getUser() {
         return user;
     }
@@ -100,14 +127,27 @@ public class StationDetails {
         this.user = user;
     }
 
-    public List<Price> getPrices() {
-        return prices;
+    public List<Price> getPrice() {
+        return price;
     }
 
-    public void setPrices(List<Price> prices) {
-        this.prices = prices;
+    public void setPrice(List<Price> price) {
+        this.price = price;
     }
 
+    public List<Service> getServices() {
+        return services;
+    }
 
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
 
+    public List<Promotion> getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(List<Promotion> promotions) {
+        this.promotions = promotions;
+    }
 }

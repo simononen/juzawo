@@ -9,13 +9,18 @@ import android.widget.TextView;
 
 import com.example.simo.juzawo.DetailsActivity;
 import com.example.simo.juzawo.R;
+import com.example.simo.juzawo.TabsDetailsActivity;
 
 import java.util.List;
 
 public class PriceAdapter extends ArrayAdapter<Price> {
 
-    public PriceAdapter(DetailsActivity context, int details_item, List<Price> prices) {
+    public PriceAdapter(TabsDetailsActivity context, int details_item, List<Price> prices) {
         super(context, details_item, prices);
+    }
+
+    public PriceAdapter(DetailsActivity detailsActivity, int details_items, List<Price> price) {
+        super(detailsActivity, details_items, price);
     }
 
     @Override
@@ -29,10 +34,14 @@ public class PriceAdapter extends ArrayAdapter<Price> {
         // Lookup view for data population
         TextView fuelType = (TextView) convertView.findViewById(R.id.fuel_type);
         TextView fuelPrice = (TextView) convertView.findViewById(R.id.fuel_price);
+        TextView fuelDescription = (TextView) convertView.findViewById(R.id.description);
+        TextView stationServices = (TextView) convertView.findViewById(R.id.services);
 
         // Populate the data into the template view using the data object
-        fuelType.setText(a.getFuelType().getName());
-        fuelPrice.setText(a.getPrice());
+        fuelType.setText(""+a.getFuel_type().getName());
+        fuelPrice.setText(""+a.getPrice());
+        fuelDescription.setText(""+a.getFuel_type().getDescription());
+        //stationServices.setText(""+a.getServices());
 
         // Return the completed view to render on screen
         return convertView;

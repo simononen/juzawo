@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     private TextView mResult;
     private ProgressDialog mProgress;
     private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private List<StationDetails> stations;
 
     protected GoogleApiClient mGoogleApiClient;
@@ -55,7 +59,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     private double l;
     private double lg;
 
+    private Button retry;
+    private ImageView noConnectioin;
+    private TextView notificationText;
+    private TextView connectionErrorText;
+
     private static Bundle bundle = new Bundle();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,30 +75,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         //progressBar.setVisibility(View.VISIBLE);
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
+        // setSupportActionBar(toolbar);
 
         //listView = (ListView) findViewById(R.id.list);
 
-        // create class object
-        gps = new GPSTracker(MainActivity.this);
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setTitle("Loading stations ....");
 
-         //check if GPS enabled
-        if (gps.canGetLocation()) {
-
-        double latitude = gps.getLatitude();
-        double longitude = gps.getLongitude();
-        //192.168.43.218:8080
-
-        Retrofit retrofit = RetrofitBuilder.build();
-
-        StationsEndpoint stationsEndpoint = retrofit.create(StationsEndpoint.class);
-
-        Call<List<Station>> call = stationsEndpoint.findNearestStations(latitude, longitude, 44);
-
-        call.enqueue(this);
-
-        Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-        }
+        builder();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +93,32 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             }
         });
 
+    }
+
+    public void builder() {
+        // create class object
+        gps = new GPSTracker(MainActivity.this);
+
+        //check if GPS enabled
+        if (gps.canGetLocation()) {
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            //192.168.43.218:8080
+
+            Retrofit retrofit = RetrofitBuilder.build();
+
+            StationsEndpoint stationsEndpoint = retrofit.create(StationsEndpoint.class);
+
+            Call<List<Station>> call = stationsEndpoint.findNearestStations(latitude, longitude, 10);
+
+            call.enqueue(this);
+
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        } else {
+            gps.showSettingsAlert();
+
+        }
     }
 
 
@@ -122,9 +142,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             Intent mapActivityIntent = new Intent(MainActivity.this, MapActivity.class);
             mapActivityIntent.putExtras(bundle);
             startActivity(mapActivityIntent);
-        }
-        else if(id == R.id.action_settings) {
-
+        } else if (id == R.id.refresh) {
+            progressDialog.show();
+            builder();
         }
 
         return super.onOptionsItemSelected(item);
@@ -156,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onResponse(Call<List<Station>> call, Response<List<Station>> response) {
+
+        progressDialog.dismiss();
+
+        isInternetOn();
+
         final ArrayList<Station> stations = (ArrayList<Station>) response.body();
         ListView listView = (ListView) findViewById(R.id.list);
         final StationsAdapter custom = new StationsAdapter(this, R.layout.list_item, stations);
@@ -165,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 Station item = custom.getItem(position);
                 Long result = item.getId();
-                Intent i = new Intent(MainActivity.this, DetailsActivity.class);
+                Intent i = new Intent(MainActivity.this, TabsDetailsActivity.class);
                 Bundle b = new Bundle();
                 b.putLong("TEXT", result);
                 i.putExtras(b);
@@ -180,7 +205,57 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     public void onFailure(Call<List<Station>> call, Throwable t) {
         Log.e("http", "", t);
+        isInternetOn();
         Toast.makeText(this, "Stations: ERROR ", Toast.LENGTH_LONG).show();
 
+    }
+
+    public final boolean isInternetOn() {
+
+        // get Connectivity Manager object to check connection
+        ConnectivityManager connec =
+                (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+
+        // Check for network connections
+        if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
+
+            // if connected with internet
+            retry = (Button) findViewById(R.id.button_retry);
+            retry.setVisibility(View.INVISIBLE);
+            noConnectioin = (ImageView) findViewById(R.id.image_no_connection);
+            noConnectioin.setVisibility(View.INVISIBLE);
+            notificationText = (TextView) findViewById(R.id.notification);
+            notificationText.setVisibility(View.INVISIBLE);
+            connectionErrorText = (TextView) findViewById(R.id.connection_failed);
+            connectionErrorText.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
+            return true;
+
+        } else if (
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
+                        connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
+            retry = (Button) findViewById(R.id.button_retry);
+            retry.setVisibility(View.VISIBLE);
+            retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.VISIBLE);
+                    builder();
+                }
+            });
+            noConnectioin = (ImageView) findViewById(R.id.image_no_connection);
+            noConnectioin.setVisibility(View.VISIBLE);
+            notificationText = (TextView) findViewById(R.id.notification);
+            notificationText.setVisibility(View.VISIBLE);
+            connectionErrorText = (TextView) findViewById(R.id.connection_failed);
+            connectionErrorText.setVisibility(View.VISIBLE);
+            Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return false;
     }
 }

@@ -35,4 +35,12 @@
     <string name="service_name">Service name</string>
     <string name="image_icon">image</string>
     <string name="branchName">Brach Name</string>
+    <string name="description">Description</string>
+    <string name="title_activity_tabs">Tabs</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_tabs_details">StationDetails</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="refresh">refresh</string>
 </resources>

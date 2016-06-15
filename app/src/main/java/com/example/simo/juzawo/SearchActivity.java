@@ -2,14 +2,10 @@ package com.example.simo.juzawo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-
-    private SearchView mSearchView;
+public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +18,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
-        /** Get the action view of the menu item whose id is search */
-        View v = (View) menu.findItem(R.id.search).getActionView();
-
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
-
-    private void setupSearchView() {
-        //mSearchView.setIconifiedByDefault(true);
-        //mSearchView.setOnQueryTextListener(this);
-        mSearchView.setQueryHint("Search Here");
-    }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -49,15 +34,5 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
     }
 }
